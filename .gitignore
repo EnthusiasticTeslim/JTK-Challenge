@@ -1,5 +1,9 @@
+# Folders
 Train
+Processed_*
 jtk
+
+# Extensions
 .DS_Store
 */.DS_Store
 */*/.DS_Store
