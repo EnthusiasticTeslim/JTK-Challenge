@@ -5,10 +5,11 @@ from tqdm import tqdm
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-from env import *
+from env import *#get_n_value
 from utils import date_parser
 
 os.system("clear")
+n_val = get_n_value(os.getcwd())
 
 training_folder_path = "Train" # Folder path
 
@@ -95,7 +96,7 @@ class JTK_Preprocess_ESP:
 
 if __name__ == "__main__":
     #################### Call the function ####################
-    prep = JTK_Preprocess_ESP(path=training_folder_path, slide=SLIDE_N)
+    prep = JTK_Preprocess_ESP(path=training_folder_path, slide=n_val)
     # esp_df = prep.load_esp() # This line is not needed except for QC
     prep.crop_testdata_esplabels()
     os.system("rm -rf scripts/__pycache__")
