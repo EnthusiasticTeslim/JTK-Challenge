@@ -57,7 +57,7 @@ class JTK_Preprocess_ESP:
         espt = self.load_esp()
         pump_data_path = self.create_well_paths()
 
-        for idx,well in tqdm(enumerate(self.wells[:1]), position=0, total=len(self.wells)):
+        for idx,well in tqdm(enumerate(self.wells), position=0, total=len(self.wells)):
             # Load the well test tracker for each unique well
             well_tests = espt[espt["API"]==well].sort_values("Install_#").reset_index(drop=True)
 
@@ -87,7 +87,7 @@ class JTK_Preprocess_ESP:
 
                     if not os.path.exists(f"{fol_name}/{well}"):
                         os.makedirs(f"{fol_name}/{well}")
-                        pump_crop.to_csv(f"{fol_name}/{well}/esp_test_{pump_num}.csv")
+                        pump_crop.to_parquet(f"{fol_name}/{well}/esp_test_{pump_num}.parquet")
                 else:
                     pass
         return
