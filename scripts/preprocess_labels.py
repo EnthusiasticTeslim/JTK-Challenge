@@ -89,6 +89,8 @@ class JTK_Preprocess_ESP:
                     if not os.path.exists(f"{fol_name}/{well}"):
                         os.makedirs(f"{fol_name}/{well}")
                         pump_crop.to_parquet(f"{fol_name}/{well}/esp_test_{pump_num}.parquet")
+                    else:
+                        pump_crop.to_parquet(f"{fol_name}/{well}/esp_test_{pump_num}.parquet")
                 else:
                     pass
         return
