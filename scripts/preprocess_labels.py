@@ -5,21 +5,21 @@ from tqdm import tqdm
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-from env import get_n_value
+from env import SLIDE_N,ESP_OUTPUT_FOLDER
 from utils import date_parser
 
 os.system("clear")
-n_val = get_n_value(os.getcwd())
 
 training_folder_path = "Train" # Folder path
 
 
 class JTK_Preprocess_ESP:
-    def __init__(self, path, slide) -> None:
+    def __init__(self, path, slide, output_path) -> None:
         self.data_path = path
         self.esp_tracker = None
         self.wells = None
         self.n = slide
+        self.output_folder = output_path
     
     def load_esp(self):
         """Import the Esp tracker file"""
@@ -48,7 +48,7 @@ class JTK_Preprocess_ESP:
         Args:
             clean (bool): Delete the preprocessing folder if it exists. Defaults to True.
         """
-        fol_name = f"Processed_{self.n}"
+        fol_name = f"{self.output_folder}_{self.n}"
         if clean and os.path.exists(fol_name):
             os.system(f"rm -rf {fol_name}")
         
@@ -98,7 +98,9 @@ class JTK_Preprocess_ESP:
 
 if __name__ == "__main__":
     #################### Call the function ####################
-    prep = JTK_Preprocess_ESP(path=training_folder_path, slide=n_val)
+    prep = JTK_Preprocess_ESP(path=training_folder_path, 
+                              slide=SLIDE_N, 
+                              output_path=ESP_OUTPUT_FOLDER)
     # esp_df = prep.load_esp() # This line is not needed except for QC
     prep.crop_testdata_esplabels()
     os.system("rm -rf scripts/__pycache__")

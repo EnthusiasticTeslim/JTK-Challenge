@@ -1,19 +1,21 @@
 from dotenv import load_dotenv
 import os
-from pathlib import Path
-import sys
 
-# Set the root directory to project home path
-root_path = Path.cwd()
-sys.path.append(str(root_path))
+cwd = os.getcwd()
+env_path = f"{cwd}/.env"
 
-def get_n_value(root_path):
-    os.system(f"source {root_path}/.env")    # Source the environment file
-    load_dotenv(dotenv_path=f"{root_path}/.env")     # Load it into python
+if os.path.exists(env_path):
+    # Source the environment file and load it into python
+    os.system(f"source {env_path}")
+    load_dotenv(dotenv_path=f"{env_path}")
 
-    # Assign the environment variables to python global variables
-    SLIDE_N = os.environ.get("SLIDE_N")
-    return SLIDE_N
+else:
+    env_path = f"{os.path.dirname(cwd)}/.env"
+    # Source the environment file and load it into python
+    os.system(f"source {env_path}")
+    load_dotenv(dotenv_path=f"{env_path}")
 
-if __name__ == "__main__":
-    get_n_value(root_path)
+SLIDE_N = os.environ.get("SLIDE_N")
+ESP_OUTPUT_FOLDER = os.environ.get("ESP_OUTPUT_FOLDER")
+DAILY_OUTPUT_FOLDER = os.environ.get("DAILY_OUTPUT_FOLDER")
+RESAMPLING_FREQ = os.environ.get("RESAMPLING_FREQ")
