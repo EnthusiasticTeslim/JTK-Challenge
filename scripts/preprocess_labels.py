@@ -5,7 +5,7 @@ from tqdm import tqdm
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-from env import *#get_n_value
+from env import get_n_value
 from utils import date_parser
 
 os.system("clear")
