@@ -3,12 +3,11 @@ from data_loader import Train_Test_Split, ESPDataset, ESPDataModule
 import os
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
-from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
+from pytorch_lightning.callbacks import ModelCheckpoint
 from model import LSTMClassifier
 from torch import nn, optim
 from torchmetrics.classification import BinaryAccuracy
 import torch 
-from tqdm import tqdm
 
 from env import *
 
@@ -20,7 +19,7 @@ class ESPFailureModel(pl.LightningModule):
                                     n_classes=n_classes,
                                     n_layer=n_layers,
                                     dropout=dropout)
-        self.criterion = nn.CrossEntropyLoss()
+        self.criterion = nn.BCELoss()
         self.lr = lr
         self.metric = BinaryAccuracy(threshold=0.5)
 
@@ -48,7 +47,6 @@ class ESPFailureModel(pl.LightningModule):
         labels = batch["labels"]
         loss, outputs = self(daily_sequence, labels)
         predictions = torch.round(outputs)
-        # print(f"\n\n\n\n{predictions}\n{predictions.shape}\n{labels}\n{labels.shape}\n")
         step_acc = self.metric(predictions, labels)
 
         self.log("val_loss", loss, prog_bar=True, logger=True)
@@ -116,7 +114,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train and evaluate an LSTM model on NPZ data with dynamic configuration.")
     parser.add_argument("--split", type=float, default=0.9, help="Train test split percentage")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size for the DataLoader")
-    parser.add_argument("--learning_rate", type=float, default=0.0001, help="Initial learning rate for the optimizer")
+    parser.add_argument("--learning_rate", type=float, default=0.001, help="Initial learning rate for the optimizer")
     parser.add_argument("--num_epochs", type=int, default=10, help="Number of training epochs")
     parser.add_argument("--num_layers", type=int, default=2, help="Number of LSTM layers")
     parser.add_argument("--dropout", type=float, default=0.2, help="Dropout rate")

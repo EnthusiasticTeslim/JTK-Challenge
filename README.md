@@ -24,13 +24,29 @@ Steps were taken to ensure new datasets can be easily generated for prediction d
 Both scripts only need to be run once.
 
 
+### Training the model
+1. Arguments to the train script can be specified. By default, the data folder is obtained from the env file. Additional arguments like
+    - `split` - train-test-split percentage.
+        - validation data is default to 10% of training data
+    - `batch_size` - batch size of the training dataset
+    - `learning_rate` - to update the model weights
+    - `num_epochs` - number of epochs to train the model for
+    - `dropout` - percentage of dropout during training
+    - `num_layers` - number of layers you want the model to have.
+    ```bash
+    ~$python scripts/train.py
+    ```
+
+### Inference
+
 
 ### To-Do
 - [x] Complete data cleaning for spikes
 - [x] Resample data for cropping
 - [x] Crop timeseries for training model
-- [ ] Handle nan values
-- [ ] Create model architecture with LSTM
+- [x] Handle nan values
+- [x] Create model architecture with LSTM
+- [ ] Improve model architecture
 
 
 
@@ -38,6 +54,8 @@ You can specify a `SLIDE_N` value in the environment file to generate binary lab
 
 
 
-`num_hidden` is simply the dimension of the hidden state.
 
-The number of hidden layers is something else entirely. You can stack LSTMs on top of each other, so that the output of the first LSTM layer is the input to the second LSTM layer and so on. The number of hidden layers is how many LSTMs you stack on top of each other.
+`num_hidden` is simply the dimension of the hidden state.<br>
+The number of hidden layers is something else entirely. You can stack LSTMs on top of each other, 
+so that the output of the first LSTM layer is the input to the second LSTM layer and so on. 
+The number of hidden layers is how many LSTMs you stack on top of each other.

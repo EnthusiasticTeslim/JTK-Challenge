@@ -22,6 +22,7 @@ class LSTMClassifier(nn.Module):
                              dropout=dropout,)
         
         self.classifier = nn.Linear(n_hidden*2, n_classes)
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
         self.lstm1.flatten_parameters()
@@ -29,4 +30,5 @@ class LSTMClassifier(nn.Module):
 
         # Extract the last state of the last layer
         out = hidden[-1]
-        return self.classifier(out)
+        out = self.classifier(out)
+        return self.sigmoid(out)
