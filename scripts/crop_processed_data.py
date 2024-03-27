@@ -6,6 +6,7 @@ import pandas as pd
 from multiprocessing import cpu_count, Pool
 from tqdm import tqdm
 from scipy.interpolate import interp1d
+from scipy import stats as st
 
 # Import environment variables
 from env import SLIDE_N,\
@@ -62,7 +63,14 @@ class JTK_Preprocess_Daily:
                 resample_daily_df = self.resample_and_interpolate_features(data_date,
                                                                            self.resampling_frequency,
                                                                            daily_df)
-                save_path = f"{self.output_path}/{well_api}_esp#{esp_num}_{data_date}.npz"
+                
+                # Check if the ESP pump was active (AC) or failed (PF)
+                label_arr = resample_daily_df["Label"].to_numpy()
+                label_class = "AC"
+                if st.mode(label_arr).mode == 1:
+                    label_class = "PF"
+                
+                save_path = f"{self.output_path}/{well_api}_esp#{esp_num}_{data_date}_{label_class}.npz"
                 self.save_npz_file(resample_daily_df,save_path)
 
     def resample_and_interpolate_features(self,doi,frq,daily_df):

@@ -35,3 +35,9 @@ Both scripts only need to be run once.
 
 
 You can specify a `SLIDE_N` value in the environment file to generate binary labels for number of days before an ESP test fails.
+
+
+
+`num_hidden` is simply the dimension of the hidden state.
+
+The number of hidden layers is something else entirely. You can stack LSTMs on top of each other, so that the output of the first LSTM layer is the input to the second LSTM layer and so on. The number of hidden layers is how many LSTMs you stack on top of each other.

@@ -3,6 +3,8 @@ Train
 Processed_*
 Cropped_*
 jtk
+checkpoints
+lightning_logs
 
 # Extensions
 .DS_Store
