@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy.interpolate import interp1d
 
 def date_parser(str_date):
     """
@@ -62,6 +63,58 @@ def resample_dataframe(df, duration):
     df = df.resample(f"{duration}min").interpolate(method="linear")
     df = df.map(lambda x: round(x, 4))
     return df
+
+
+def resample_and_interpolate_features(doi,frq,daily_df):
+    """
+    Resample training features to desired frequency
+
+    Args:
+        doi (datetime): date of interest
+        frq (int): frequency values for interpolation. Unit is minutes
+        daily_df (pd.DataFrame): raw dataframe within the time window of each ESP
+
+    Returns:
+        pd.DataFrame: interpolated dataframe
+    """
+
+    # Specify interpolation rows
+    start_time = f"{str(doi)} 00:00:00"
+    end_time = f"{str(doi)} 23:59:59"
+    date_range = pd.date_range(start=start_time, end=end_time, freq=f"{frq}min")
+
+    # Create dummy array dimensions
+    nrows,ncols = len(date_range), len(daily_df.columns)
+    tmp_array = np.zeros((nrows,ncols)) * np.nan
+
+    # Loop through columns and linearly interpolate non-nan rows with data
+    for col_idx,col in enumerate(daily_df.columns):
+        tmp_df = daily_df[[col]].dropna()
+
+        if len(tmp_df) > 2:
+            # Fit data
+            float_times = tmp_df.index.to_numpy().astype(float)
+            linear_fit = interp1d(float_times,tmp_df[col])
+
+            # Interpolate data
+            data_dt_limit = date_range[(date_range>=tmp_df.index[0]) & 
+                                    (date_range<=tmp_df.index[-1])]
+            data_dt_idx = np.where((date_range>=tmp_df.index[0]) & 
+                                (date_range<=tmp_df.index[-1]))[0]
+            float_data_dt_limit = data_dt_limit.to_numpy().astype(float)
+            intrp_data = linear_fit(float_data_dt_limit)
+
+            # Populate dummy array
+            tmp_array[data_dt_idx, col_idx] = intrp_data
+    
+    # Create interpolated dataframe
+    intrp_daily_df = pd.DataFrame(tmp_array)
+    intrp_daily_df.columns = daily_df.columns
+    intrp_daily_df.index = date_range
+    # nan values are filled in the labels because label values are known
+    intrp_daily_df["Label"] = intrp_daily_df["Label"].bfill().ffill().to_numpy()
+
+    return intrp_daily_df
 
 
 

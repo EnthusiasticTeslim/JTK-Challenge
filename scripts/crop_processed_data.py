@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from multiprocessing import cpu_count, Pool
 from tqdm import tqdm
-from scipy.interpolate import interp1d
 from scipy import stats as st
 
 # Import environment variables
@@ -13,7 +12,7 @@ from env import SLIDE_N,\
     ESP_OUTPUT_FOLDER,\
     DAILY_OUTPUT_FOLDER,\
     RESAMPLING_FREQ
-from utils import clip_zscore_outliers
+from utils import clip_zscore_outliers, resample_and_interpolate_features
 
 os.system("clear")
 
@@ -60,9 +59,9 @@ class JTK_Preprocess_Daily:
             for data_date in np.unique(df.index.date):
                 # Extract rows corresponding to the active day and save it
                 daily_df = df[df.index.date == data_date]
-                resample_daily_df = self.resample_and_interpolate_features(data_date,
-                                                                           self.resampling_frequency,
-                                                                           daily_df)
+                resample_daily_df = resample_and_interpolate_features(data_date,
+                                                                      self.resampling_frequency,
+                                                                      daily_df)
                 
                 # Check if the ESP pump was active (AC) or failed (PF)
                 label_arr = resample_daily_df["Label"].to_numpy()
@@ -72,57 +71,6 @@ class JTK_Preprocess_Daily:
                 
                 save_path = f"{self.output_path}/{well_api}_esp#{esp_num}_{data_date}_{label_class}.npz"
                 self.save_npz_file(resample_daily_df,save_path)
-
-    def resample_and_interpolate_features(self,doi,frq,daily_df):
-        """
-        Resample training features to desired frequency
-
-        Args:
-            doi (datetime): date of interest
-            frq (int): frequency values for interpolation. Unit is minutes
-            daily_df (pd.DataFrame): raw dataframe within the time window of each ESP
-
-        Returns:
-            pd.DataFrame: interpolated dataframe
-        """
-
-        # Specify interpolation rows
-        start_time = f"{str(doi)} 00:00:00"
-        end_time = f"{str(doi)} 23:59:59"
-        date_range = pd.date_range(start=start_time, end=end_time, freq=f"{frq}min")
-
-        # Create dummy array dimensions
-        nrows,ncols = len(date_range), len(daily_df.columns)
-        tmp_array = np.zeros((nrows,ncols)) * np.nan
-
-        # Loop through columns and linearly interpolate non-nan rows with data
-        for col_idx,col in enumerate(daily_df.columns):
-            tmp_df = daily_df[[col]].dropna()
-
-            if len(tmp_df) > 2:
-                # Fit data
-                float_times = tmp_df.index.to_numpy().astype(float)
-                linear_fit = interp1d(float_times,tmp_df[col])
-
-                # Interpolate data
-                data_dt_limit = date_range[(date_range>=tmp_df.index[0]) & 
-                                        (date_range<=tmp_df.index[-1])]
-                data_dt_idx = np.where((date_range>=tmp_df.index[0]) & 
-                                    (date_range<=tmp_df.index[-1]))[0]
-                float_data_dt_limit = data_dt_limit.to_numpy().astype(float)
-                intrp_data = linear_fit(float_data_dt_limit)
-
-                # Populate dummy array
-                tmp_array[data_dt_idx, col_idx] = intrp_data
-        
-        # Create interpolated dataframe
-        intrp_daily_df = pd.DataFrame(tmp_array)
-        intrp_daily_df.columns = daily_df.columns
-        intrp_daily_df.index = date_range
-        # nan values are filled in the labels because label values are known
-        intrp_daily_df["Label"] = intrp_daily_df["Label"].bfill().ffill().to_numpy()
-
-        return intrp_daily_df
 
 
     def save_npz_file(self, interpolated_df, save_path):

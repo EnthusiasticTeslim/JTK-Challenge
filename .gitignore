@@ -2,6 +2,7 @@
 Train
 Processed_*
 Cropped_*
+Predictions_*
 jtk
 checkpoints
 lightning_logs

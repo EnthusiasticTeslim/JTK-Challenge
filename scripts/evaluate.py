@@ -21,7 +21,7 @@ class ESP_Eval_Chkpt:
                                     test_paths=data_paths["test"],
                                     batch_size=self.batch_size)
         data_module.setup()
-        test_dataset = data_module.test_paths
+        test_dataset = data_module.test_dataset
         test_dataloader = DataLoader(test_dataset, 
                                      batch_size=self.batch_size,
                                      shuffle=False,)
@@ -32,9 +32,12 @@ class ESP_Eval_Chkpt:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate saved model checkpoint.")
-    parser.add_argument("--chkpt", type=str, default="checkpoints/best-chckpt-v17.ckpt", help="Model Checkpoint")
+    parser.add_argument("--chkpt", type=str, default=BEST_CHECKPOINT, help="Model Checkpoint")
     args = parser.parse_args()
 
     os.system("clear")
+    
     eval = ESP_Eval_Chkpt(args.chkpt)
     eval.evaluate()
+
+    os.system("rm -rf scripts/__pycache__")
