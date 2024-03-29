@@ -40,7 +40,7 @@ class ESP_Eval_Chkpt:
         for batch in self.dataloader:
             yp = self.model(batch["features"])
             yp = np.squeeze(yp[1].cpu().detach().numpy())
-            yp = np.where(yp>=0.5, 1, 0)
+            yp = np.where(yp>=0.8, 1, 0)
             yt = np.squeeze(batch["labels"].cpu().detach().numpy())
             ytest.append(yt)
             ypred.append(yp)
