@@ -24,6 +24,7 @@ class ESPFailureModel(pl.LightningModule):
         self.lr = lr
         self.metric = BinaryAccuracy(threshold=0.5)
         self.fbeta_score = BinaryFBetaScore(beta=2.0)
+        self.save_hyperparameters()
 
     def forward(self, x, labels=None):
         output = self.model(x)
@@ -77,8 +78,12 @@ class ESPFailureModel(pl.LightningModule):
 
 
 
-def trainer_wrapper(split, batch_size, learning_rate, num_epochs, dropout, num_layers):
+def trainer_wrapper(split, batch_size, learning_rate, num_epochs, dropout, num_layers, seed):
     # ------------------------------ Train test split and load dataset ------------------------------
+
+    # set seed for reproducibility
+    pl.seed_everything(seed=seed)
+
     tts = Train_Test_Split(f"{DAILY_OUTPUT_FOLDER}_{SLIDE_N}", split=split)
     data_paths = tts.split_data()
 
@@ -115,15 +120,24 @@ def trainer_wrapper(split, batch_size, learning_rate, num_epochs, dropout, num_l
                          max_epochs=num_epochs,
                          enable_progress_bar=True)
     
+    model.save_hyperparameters({"hidden_dim": model.model.lstm1.hidden_size,
+                            "seed": seed,
+                            "split": split,
+                            "batch_size": batch_size,
+                            "device":trainer.accelerator})
+    
+    
     trainer.fit(model, data_module)
+
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train and evaluate an LSTM model on NPZ data with dynamic configuration.")
-    parser.add_argument("--split", type=float, default=0.9, help="Train test split percentage")
+    parser.add_argument("--split", type=float, default=0.8, help="Train test split percentage")
+    parser.add_argument("--seed", type=int, default=42, help="Seed for reproducibility")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size for the DataLoader")
-    parser.add_argument("--learning_rate", type=float, default=0.001, help="Initial learning rate for the optimizer")
-    parser.add_argument("--num_epochs", type=int, default=100, help="Number of training epochs")
+    parser.add_argument("--learning_rate", type=float, default=0.0001, help="Initial learning rate for the optimizer")
+    parser.add_argument("--num_epochs", type=int, default=250, help="Number of training epochs")
     parser.add_argument("--num_layers", type=int, default=2, help="Number of LSTM layers")
     parser.add_argument("--dropout", type=float, default=0.2, help="Dropout rate")
     # parser.add_argument("--hidden_dim", type=int, default=64, help="Dimension of the LSTM hidden state")
@@ -140,6 +154,7 @@ if __name__ == "__main__":
                     learning_rate=args.learning_rate, 
                     num_epochs=args.num_epochs,
                     dropout=args.dropout,
-                    num_layers=args.num_layers)
+                    num_layers=args.num_layers,
+                    seed=args.seed)
     
     os.system("rm -rf scripts/__pycache__")
