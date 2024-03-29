@@ -38,7 +38,7 @@ class ESPFailureModel(pl.LightningModule):
         daily_sequence = batch["features"]
         labels = batch["labels"]
         loss, outputs = self(daily_sequence, labels)
-        predictions = torch.round(outputs)
+        predictions = torch.where(outputs > 0.8, 1, 0)
         step_acc = self.metric(predictions, labels)
         step_fbeta = self.fbeta_score(predictions, labels)
 
@@ -65,7 +65,7 @@ class ESPFailureModel(pl.LightningModule):
         daily_sequence = batch["features"]
         labels = batch["labels"]
         loss, outputs = self(daily_sequence, labels)
-        predictions = torch.round(outputs)
+        predictions = torch.where(outputs > 0.8, 1, 0)
         step_acc = self.metric(predictions, labels)
         step_fbeta = self.fbeta_score(predictions, labels)
 
