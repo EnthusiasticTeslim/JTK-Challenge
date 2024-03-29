@@ -9,7 +9,7 @@
             operational efficiency.<br><br>
             We analyzed data from <b>70 wells</b> and trained machine learning models to predict precursory
             signals several days ahead of an ESP failure event. Additional details on the competition
-            can be found <a src="https://www.spegcs.org/events/6836/">here</a>.
+            can be found <a href="https://www.spegcs.org/events/6836/">here</a>.
         </td>
         <td>
             <img src="ESP.png" height="auto" width="300px">
