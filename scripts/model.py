@@ -21,6 +21,8 @@ class LSTMClassifier(nn.Module):
                              batch_first=True, 
                              dropout=dropout,)
         
+        self.batch_norm = nn.BatchNorm1d(n_hidden*2)
+        
         self.classifier = nn.Linear(n_hidden*2, n_classes)
         self.sigmoid = nn.Sigmoid()
 
@@ -28,7 +30,10 @@ class LSTMClassifier(nn.Module):
         self.lstm1.flatten_parameters()
         _, (hidden, _) = self.lstm1(x)
 
+
+
         # Extract the last state of the last layer
         out = hidden[-1]
+        out = self.batch_norm(out)
         out = self.classifier(out)
         return self.sigmoid(out)
