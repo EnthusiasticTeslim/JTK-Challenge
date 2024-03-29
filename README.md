@@ -1,4 +1,17 @@
-# JTK-Challenge
+# BPX-Challenge
+
+### Team JTK
+| Name | Affilation | Email |
+| :-- | :-- | :-- |
+| Teslim Olayiwola | Louisiana State University | tolayi1@lsu.edu |
+| Korede Akinpelu | Louisiana State University | dakinp1@lsu.edu |
+| Joses Omojola | University of Arizona | jomojo1@arizona.edu |
+
+### Table of Content
+1. [Environment Setup](#environment-setup)
+2. [Data Preprocessing](#preprocessing-the-dataset)
+3. [Model Training and Eval](#training-the-model)
+4. [Inference](#inference)
 
 ### Environment setup
 Python virtual environments are used for this project. Execute the commands below in terminal to install all requirements.
@@ -9,7 +22,7 @@ Python virtual environments are used for this project. Execute the commands belo
 ```
 
 ### Preprocessing the dataset
-Steps were taken to ensure new datasets can be easily generated for prediction durations. Major folder names or the prediction fail window can be modified in the environment file. To execute any of the scripts, the virtual environment `jtk` must be active.
+Steps were taken to ensure new datasets can be easily generated for prediction durations. Major folder names or the prediction fail window can be modified in the environment file `/.env`. You can specify a `SLIDE_N` value in the environment file to generate binary labels for number of days before an ESP test fails. To execute any of the scripts, the virtual environment `jtk` must be active. 
 1. Generate the labels for training the data. 
     ```bash
     ~$python scripts/preprocess_labels.py
@@ -21,7 +34,7 @@ Steps were taken to ensure new datasets can be easily generated for prediction d
     ```
     **Note**: This creates a folder **`./Cropped_14`**. The script is executed across multiple-processors because of the numerous *for* loops and it takes a while to run (roughly 1.5 hours on an old macbook with 4 processors).
 
-Both scripts only need to be run once.
+Both scripts only need to be run once. 
 
 
 ### Training the model
@@ -37,6 +50,20 @@ Both scripts only need to be run once.
     ~$python scripts/train.py
     ```
 
+2. The training process saves the best checkpoint for each training run. To evaluate a model's checkpoint on the test dataset
+    ```bash
+    ~$python scripts/evaluate.py --chkpt="checkpoints/best-chckpt-v17.ckpt"
+
+
+    ────────────────────────────────────────
+    Test metric             DataLoader 0
+    ────────────────────────────────────────
+    test_acc                 0.785
+    test_fbeta               0.823
+    test_loss                0.575
+    ────────────────────────────────────────
+    ```
+
 ### Inference
 
 
@@ -46,11 +73,7 @@ Both scripts only need to be run once.
 - [x] Crop timeseries for training model
 - [x] Handle nan values
 - [x] Create model architecture with LSTM
-- [ ] Improve model architecture
-
-
-
-You can specify a `SLIDE_N` value in the environment file to generate binary labels for number of days before an ESP test fails.
+- [ ] Improve model architecture - (Limited time for multiple tests)
 
 
 
