@@ -1,10 +1,23 @@
 # BPX-Challenge
-<div gap=10px>
-    <div style="max-width: 35ch;" align=top>
+<style>
+  .body-container {
+    display:flex; 
+    flex-direction:row; 
+    justify-content:flex-start; 
+    gap:30px; 
+    align-items:top; 
+    padding-left:0
+  }
+  .description {
+    max-width: 35ch;
+  }
+</style>
+<div class="body-container">
+    <div class="description">
     Electric submersible pumps (ESP) are used to move high volume of fluids in unconventional wells. Each pump has an average run life of 12 months and operators in the Permian Basin report that ~3 pump repairs are required weekly across their active wells. This translates to upwards of $50MM in expenses annually and this challenge is targeted at estimating ESP run life to improve operational efficiency.<br><br>
     We analyzed data from <b>70 wells</b> and trained machine learning models to predict precursory signals several days ahead of an ESP failure event. Additional details on the competition can be found <a src="https://www.spegcs.org/events/6836/">here</a>.
     </div>
-    <div style="text-align:center; flex-shrink:0;"  align=top>
+    <div style="text-align:center; flex-shrink:0;">
         <img src="ESP.png" height="300px" width="auto">
         <figcaption>Electric Submersible Pump Schematic</figcaption>
     </div>
