@@ -14,14 +14,14 @@ class ESP_Eval_Chkpt:
         self.batch_size = batch_size
     
     def evaluate(self):
-        tts = Train_Test_Split(f"{DAILY_OUTPUT_FOLDER}_{SLIDE_N}", split=0.99)
+        tts = Train_Test_Split(f"{DAILY_OUTPUT_FOLDER}_{SLIDE_N}", split=0.90)
         data_paths = tts.split_data()
         data_module = ESPDataModule(train_paths=data_paths["train"],
                                     val_paths=data_paths["val"],
                                     test_paths=data_paths["test"],
                                     batch_size=self.batch_size)
         data_module.setup()
-        test_dataset = data_module.train_dataset
+        test_dataset = data_module.test_paths
         test_dataloader = DataLoader(test_dataset, 
                                      batch_size=self.batch_size,
                                      shuffle=False,)
