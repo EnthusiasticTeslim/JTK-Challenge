@@ -51,7 +51,8 @@ class ESPFailureModel(pl.LightningModule):
         daily_sequence = batch["features"]
         labels = batch["labels"]
         loss, outputs = self(daily_sequence, labels)
-        predictions = torch.round(outputs)
+        #predictions = torch.round(outputs)
+        predictions = torch.where(outputs > 0.8, 1, 0)
         step_acc = self.metric(predictions, labels)
         step_fbeta = self.fbeta_score(predictions, labels)
 
@@ -118,6 +119,7 @@ def trainer_wrapper(split, batch_size, learning_rate, num_epochs, dropout, num_l
     trainer = pl.Trainer(logger=logger,
                          callbacks=checkpoint_call_back,
                          max_epochs=num_epochs,
+                         deterministic=True,
                          enable_progress_bar=True)
     
     model.save_hyperparameters({"hidden_dim": model.model.lstm1.hidden_size,

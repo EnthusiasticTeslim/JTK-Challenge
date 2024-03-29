@@ -9,6 +9,8 @@ import torch
 from utils import resample_and_interpolate_features as rsif, \
     replace_nan, normalize_timeseries
 
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # Cropped_14/z8jfoj1ef3_esp#2_2022-08-03_PF.npz
 class ESP_Predictor:
     def __init__(self, checkpoint_path, api, csv_folder_path="Train", probability=0.8):
@@ -54,8 +56,8 @@ class ESP_Predictor:
     def predict(self, save_csv=True):
         self.load_well_api()
         self.preprocess_files()
-        pred_probs = self.model(self.data)
-        pred_probs = np.squeeze(pred_probs[1].detach().numpy())
+        pred_probs = self.model(self.data.to(DEVICE))
+        pred_probs = np.squeeze(pred_probs[1].cpu().detach().numpy())
         class_label = np.where(pred_probs >= self.probability, 1, 0)
 
         predictions = pd.DataFrame({"API": self.api,
