@@ -99,7 +99,7 @@ Both scripts only need to be run once.
 
 2. To reproduce the submission files, run `submission.py` which generates predictions for all the wells. 
     ```bash
-    ~$python scripts/submission.py --api="z8j7xj31j7" --train_folder=train --prob=0.8
+    ~$python scripts/submission.py
     ```
 
 
