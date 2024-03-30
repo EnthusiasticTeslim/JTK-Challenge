@@ -12,6 +12,9 @@ Python virtual environments are used for this project. Execute the commands belo
 ~$sh setup.sh
 ~$source jtk/bin/activate
 ```
+
+**Note**: The setup has been tested successfully on *Mac with **Intel** chip*, *Ubuntu*, and *Windows* using CPU and GPUs. It doesn't work well with *Mac Apple Silicon* chip and the metrics computed with the silicon chip are notably lower.<br><br>
+
 For GPUs with older versions of cuda < 12.0, you can install pytorch with `pip install torch==2.2.1+cu118 -f https://download.pytorch.org/whl/torch_stable.html`.
 
 ## Preprocessing the dataset
