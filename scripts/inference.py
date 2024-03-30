@@ -13,7 +13,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class ESP_Predictor:
-    def __init__(self, checkpoint_path, api, csv_folder_path="Train", probability=0.8):
+    def __init__(self, checkpoint_path, api, csv_folder_path="Train", probability=0.85):
         self.model = ESPFailureModel.load_from_checkpoint(checkpoint_path)
         self.model.eval()
         self.api = api
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     parser.add_argument("--chkpt", type=str, default=BEST_CHECKPOINT, help="Model Checkpoint")
     parser.add_argument("--api", type=str, help="Well api number")
     parser.add_argument("--train_folder", default="Train", type=str, help="Training data folder path")
-    parser.add_argument("--prob", type=float, default=0.8, help="Prediction probability threshold")
+    parser.add_argument("--prob", type=float, default=PROBA_THRESHOLD, help="Prediction probability threshold")
     args = parser.parse_args()
 
     args.api = "z8jfojo31x"

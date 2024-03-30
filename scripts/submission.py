@@ -5,6 +5,8 @@ import pandas as pd
 from tqdm import tqdm
 from utils import date_parser
 
+from env import PROBA_THRESHOLD
+
 if __name__ == "__main__":
     os.system("clear")
 
@@ -23,7 +25,7 @@ if __name__ == "__main__":
         model = ESP_Predictor(checkpoint_path=BEST_CHECKPOINT, 
                               api=api, 
                               csv_folder_path=data_path, 
-                              probability=0.8)
+                              probability=PROBA_THRESHOLD)
         pred = model.predict()
 
     os.system("rm -rf scripts/__pycache__")

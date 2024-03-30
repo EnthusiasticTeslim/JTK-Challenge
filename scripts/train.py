@@ -10,14 +10,17 @@ from torchmetrics.classification import BinaryAccuracy
 import torch 
 from torchmetrics.classification import BinaryFBetaScore
 
+
 from env import *
 
 
 class ESPFailureModel(pl.LightningModule):
-    def __init__(self, n_features, n_classes, lr, dropout, n_layers):
+    def __init__(self, n_features, n_classes, lr, dropout, hidden_size, n_layers, num_stack_layers):
         super().__init__()
         self.model = LSTMClassifier(n_features=n_features, 
                                     n_classes=n_classes,
+                                    num_stack_layers=num_stack_layers,
+                                    hidden_size=hidden_size,
                                     n_layer=n_layers,
                                     dropout=dropout)
         self.criterion = nn.BCELoss()
@@ -38,7 +41,11 @@ class ESPFailureModel(pl.LightningModule):
         daily_sequence = batch["features"]
         labels = batch["labels"]
         loss, outputs = self(daily_sequence, labels)
+<<<<<<< Updated upstream
         predictions = torch.where(outputs > 0.8, 1, 0)
+=======
+        predictions = torch.where(outputs > PROBA_THRESHOLD, 1, 0)
+>>>>>>> Stashed changes
         step_acc = self.metric(predictions, labels)
         step_fbeta = self.fbeta_score(predictions, labels)
 
@@ -51,7 +58,11 @@ class ESPFailureModel(pl.LightningModule):
         daily_sequence = batch["features"]
         labels = batch["labels"]
         loss, outputs = self(daily_sequence, labels)
+<<<<<<< Updated upstream
         predictions = torch.where(outputs > 0.8, 1, 0)
+=======
+        predictions = torch.where(outputs > PROBA_THRESHOLD, 1, 0)
+>>>>>>> Stashed changes
         step_acc = self.metric(predictions, labels)
         step_fbeta = self.fbeta_score(predictions, labels)
 
@@ -64,7 +75,11 @@ class ESPFailureModel(pl.LightningModule):
         daily_sequence = batch["features"]
         labels = batch["labels"]
         loss, outputs = self(daily_sequence, labels)
+<<<<<<< Updated upstream
         predictions = torch.where(outputs > 0.8, 1, 0)
+=======
+        predictions = torch.where(outputs > PROBA_THRESHOLD, 1, 0)
+>>>>>>> Stashed changes
         step_acc = self.metric(predictions, labels)
         step_fbeta = self.fbeta_score(predictions, labels)
 
@@ -129,7 +144,6 @@ def trainer_wrapper(split, batch_size, learning_rate, num_epochs, dropout, num_l
     
     
     trainer.fit(model, data_module)
-
 
 
 if __name__ == "__main__":

@@ -8,6 +8,8 @@ from sklearn.metrics import confusion_matrix
 from torch.utils.data import DataLoader
 from train import ESPFailureModel
 
+from env import PROBA_THRESHOLD
+
 
 class ESP_Eval_Chkpt:
     def __init__(self, checkpoint_path, batch_size=128):
@@ -40,7 +42,7 @@ class ESP_Eval_Chkpt:
         for batch in self.dataloader:
             yp = self.model(batch["features"])
             yp = np.squeeze(yp[1].cpu().detach().numpy())
-            yp = np.where(yp>=0.8, 1, 0)
+            yp = np.where(yp>=PROBA_THRESHOLD, 1, 0)
             yt = np.squeeze(batch["labels"].cpu().detach().numpy())
             ytest.append(yt)
             ypred.append(yp)

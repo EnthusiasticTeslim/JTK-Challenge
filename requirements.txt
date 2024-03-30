@@ -13,3 +13,5 @@ tbparse==0.0.8
 tensorboard==2.16.2
 torch==2.2.1
 tqdm==4.66.2
+optuna==3.6.0
+optuna-integration==3.6.0
