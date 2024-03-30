@@ -1,6 +1,9 @@
+from glob import glob
 import pandas as pd
 import numpy as np
 from scipy.interpolate import interp1d
+from tbparse import SummaryReader
+import yaml
 
 def date_parser(str_date):
     """
@@ -172,3 +175,50 @@ def normalize_timeseries(array):
     # Normalize the array
     norm_arr = (array - mean) / std
     return norm_arr
+
+
+def load_hp_params(path):
+    log_dirs = sorted(glob(path))
+
+    hp_params = {"run":[],
+                "dropout":[],
+                "hidden_size": [],
+                "lr": [],
+                "n_layers": [],
+                "num_stack_layers": [],
+                "train_acc":[],
+                "val_acc":[],
+                "trn_fbeta":[],
+                "val_fbeta":[],
+                "trn_loss":[],
+                "val_loss":[]}
+
+    for i,v in enumerate(log_dirs):
+        reader = SummaryReader(log_dirs[i])
+        df = reader.scalars
+
+        if len(df) > 2:
+            hp_params["run"].append(f"run_{i}")
+            with open(f"{log_dirs[i]}/hparams.yaml", "r") as file:
+                hparams = yaml.safe_load(file)
+
+            for k,v in hparams.items():
+                if k not in ["n_features", "n_classes"]:
+                    hp_params[k].append(v)
+
+            train_acc = df[df.tag=="train_acc"].value.to_numpy()
+            val_acc = df[df.tag=="val_acc"].value.to_numpy()
+            train_fbeta = df[df.tag=="train_fbeta"].value.to_numpy()
+            val_fbeta = df[df.tag=="val_fbeta"].value.to_numpy()
+            train_loss = df[df.tag=="train_loss"].value.to_numpy()
+            val_loss = df[df.tag=="val_loss"].value.to_numpy()
+
+            hp_params["train_acc"].append(np.nanmax(train_acc))
+            hp_params["val_acc"].append(np.nanmax(val_acc))
+            hp_params["trn_fbeta"].append(np.nanmax(train_fbeta))
+            hp_params["val_fbeta"].append(np.nanmax(val_fbeta))
+            hp_params["trn_loss"].append(np.nanmax(train_loss))
+            hp_params["val_loss"].append(np.nanmax(val_loss))
+    
+    df = pd.DataFrame(hp_params)
+    return df

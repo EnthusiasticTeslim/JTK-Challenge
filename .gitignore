@@ -6,6 +6,7 @@ Predictions_*
 jtk
 checkpoints
 lightning_logs
+images
 
 # Extensions
 .DS_Store
