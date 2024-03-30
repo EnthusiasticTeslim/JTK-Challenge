@@ -19,9 +19,9 @@ For GPUs with older versions of cuda < 12.0, you can install pytorch with `pip i
 
 ## Preprocessing the dataset
 Steps were taken to ensure new datasets can be easily generated for prediction durations. Major folder names or the prediction fail window can be modified in the environment file `/.env`. You can specify a `SLIDE_N` value in the environment file to generate binary labels for number of days before an ESP test fails. To execute any of the scripts, the virtual environment `jtk` must be active. 
-1. Generate the labels for training the data. 
+1. Generate the labels for training the data contained in folder "Train". 
     ```bash
-    ~$python scripts/preprocess_labels.py
+    ~$python scripts/preprocess_labels.py --folderpath "Train"
     ```
     **Note**: This creates a folder **`./Processed_14`** where 14 is the specified SLIDE_N in the environment file. 
 2. Remove local outliers and crop the data to daily windows for training and prediction
@@ -49,7 +49,7 @@ Both scripts only need to be run once.
 
 2. The training process saves the best checkpoint for each training run. To evaluate a model's checkpoint on the test dataset
     ```bash
-    ~$python scripts/evaluate.py --chkpt="checkpoints/best-chckpt-v17.ckpt"
+    ~$python scripts/evaluate.py --chkpt="checkpoints/best-chckpt-v21.ckpt"
 
 
     ────────────────────────────────────────
