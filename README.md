@@ -17,7 +17,7 @@
 | Name | Affilation | Email |
 | :-- | :-- | :-- |
 | Teslim Olayiwola | Louisiana State University | tolayi1@lsu.edu |
-| Korede Akinpelu | Louisiana State University | dakinp1@lsu.edu |
+| David Akinpelu | Louisiana State University | dakinp1@lsu.edu |
 | Joses Omojola | University of Arizona | jomojo1@arizona.edu |
 
 

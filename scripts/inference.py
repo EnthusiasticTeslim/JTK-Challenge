@@ -11,7 +11,7 @@ from utils import resample_and_interpolate_features as rsif, \
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Cropped_14/z8jfoj1ef3_esp#2_2022-08-03_PF.npz
+
 class ESP_Predictor:
     def __init__(self, checkpoint_path, api, csv_folder_path="Train", probability=0.8):
         self.model = ESPFailureModel.load_from_checkpoint(checkpoint_path)
