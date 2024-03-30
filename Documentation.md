@@ -12,6 +12,7 @@ Python virtual environments are used for this project. Execute the commands belo
 ~$sh setup.sh
 ~$source jtk/bin/activate
 ```
+For GPUs with older versions of cuda < 12.0, you can install pytorch with `pip install torch==2.2.1+cu118 -f https://download.pytorch.org/whl/torch_stable.html`.
 
 ## Preprocessing the dataset
 Steps were taken to ensure new datasets can be easily generated for prediction durations. Major folder names or the prediction fail window can be modified in the environment file `/.env`. You can specify a `SLIDE_N` value in the environment file to generate binary labels for number of days before an ESP test fails. To execute any of the scripts, the virtual environment `jtk` must be active. 
