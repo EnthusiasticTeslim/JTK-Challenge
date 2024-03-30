@@ -13,12 +13,12 @@
 </table>
 
 
-### Team JTK
+### Team DJT
 | Name | Affilation | Email |
 | :-- | :-- | :-- |
 | David Akinpelu | Louisiana State University | dakinp1@lsu.edu |
-| Teslim Olayiwola | Louisiana State University | tolayi1@lsu.edu |
 | Joses Omojola | University of Arizona | jomojo1@arizona.edu |
+| Teslim Olayiwola | Louisiana State University | tolayi1@lsu.edu |
 
 
 ### Environment setup
