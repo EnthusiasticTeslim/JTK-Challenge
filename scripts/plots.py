@@ -5,10 +5,11 @@ import numpy as np
 
 
 class Parallel_Coordinates:
-    def __init__(self, dataframe, ax=None, fs=10) -> None:
+    def __init__(self, dataframe, best_itr, ax=None, fs=10) -> None:
         self.columns = dataframe.columns[1:]
         self.data = dataframe.to_numpy()[:,1:]
         self.index = dataframe.iloc[:,0].to_list()
+        self.best_itr = best_itr
         self.ax = ax
         self.lim = self.data.shape[1] - 1
         self.fs = fs
@@ -74,7 +75,7 @@ class Parallel_Coordinates:
             col = colors[j]
             lw = 0.3
             ls = "-"
-            if j == 45:
+            if j == self.best_itr:
                 lw = 2
                 col = "k"
                 ls = "--"

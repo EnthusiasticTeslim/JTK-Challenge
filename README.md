@@ -16,8 +16,8 @@
 ### Team JTK
 | Name | Affilation | Email |
 | :-- | :-- | :-- |
-| Teslim Olayiwola | Louisiana State University | tolayi1@lsu.edu |
 | David Akinpelu | Louisiana State University | dakinp1@lsu.edu |
+| Teslim Olayiwola | Louisiana State University | tolayi1@lsu.edu |
 | Joses Omojola | University of Arizona | jomojo1@arizona.edu |
 
 
@@ -28,7 +28,9 @@ Python virtual environments are used for this project. Execute the commands belo
 ~$sh setup.sh
 ~$source jtk/bin/activate
 ```
-Documentation for running the different scripts can be found [here](Documentation.md).
+Documentation for running the different scripts can be found [here](Documentation.md). <br> <br>
+
+Link to the presentation slides can be found [here](https://docs.google.com/presentation/d/1-Hj4dXrPa_KKDlAl1cg9mzSkDlehT44X).
 
 
 ### To-Do

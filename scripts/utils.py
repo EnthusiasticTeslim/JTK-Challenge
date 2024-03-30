@@ -217,8 +217,8 @@ def load_hp_params(path):
             hp_params["val_acc"].append(np.nanmax(val_acc))
             hp_params["trn_fbeta"].append(np.nanmax(train_fbeta))
             hp_params["val_fbeta"].append(np.nanmax(val_fbeta))
-            hp_params["trn_loss"].append(np.nanmax(train_loss))
-            hp_params["val_loss"].append(np.nanmax(val_loss))
+            hp_params["trn_loss"].append(np.nanmin(train_loss))
+            hp_params["val_loss"].append(np.nanmin(val_loss))
     
     df = pd.DataFrame(hp_params)
     return df
