@@ -1,3 +1,4 @@
+import argparse
 import os
 import numpy as np
 import pandas as pd
@@ -9,8 +10,6 @@ from env import SLIDE_N,ESP_OUTPUT_FOLDER
 from utils import date_parser
 
 os.system("clear")
-
-training_folder_path = "Train" # Folder path
 
 
 class JTK_Preprocess_ESP:
@@ -97,8 +96,12 @@ class JTK_Preprocess_ESP:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Evaluate saved model checkpoint.")
+    parser.add_argument("--folderpath", type=str, default="Train", help="Folder location for raw data")
+    args = parser.parse_args()
+
     #################### Call the function ####################
-    prep = JTK_Preprocess_ESP(path=training_folder_path, 
+    prep = JTK_Preprocess_ESP(path=args.folderpath, 
                               slide=SLIDE_N, 
                               output_path=ESP_OUTPUT_FOLDER)
     # esp_df = prep.load_esp() # This line is not needed except for QC

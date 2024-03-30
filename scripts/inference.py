@@ -77,12 +77,10 @@ class ESP_Predictor:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate saved model checkpoint.")
     parser.add_argument("--chkpt", type=str, default=BEST_CHECKPOINT, help="Model Checkpoint")
-    parser.add_argument("--api", type=str, help="Well api number")
+    parser.add_argument("--api", type=str, default="z8jfojo31x", help="Well api number")
     parser.add_argument("--train_folder", default="Train", type=str, help="Training data folder path")
     parser.add_argument("--prob", type=float, default=0.8, help="Prediction probability threshold")
     args = parser.parse_args()
-
-    args.api = "z8jfojo31x"
 
     os.system("clear")
 
