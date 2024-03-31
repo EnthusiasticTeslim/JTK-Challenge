@@ -40,9 +40,3 @@ Link to the presentation slides can be found [here](https://docs.google.com/pres
 - [x] Handle nan values
 - [x] Create model architecture with LSTM
 - [x] Improve model architecture - (Limited time for multiple tests)
-
-
-`num_hidden` is simply the dimension of the hidden state.<br>
-The number of hidden layers is something else entirely. You can stack LSTMs on top of each other, 
-so that the output of the first LSTM layer is the input to the second LSTM layer and so on. 
-The number of hidden layers is how many LSTMs you stack on top of each other.
