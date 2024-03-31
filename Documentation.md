@@ -93,7 +93,7 @@ Both scripts only need to be run once.
     | "z8jfojo31x" | "2022-09-13" | 0 | 0.39669976 |
     | "z8jfojo31x" | "2022-09-14" | 0 | 0.43361512 |
 
-2. To reproduce the submission files, run `submission.py` which generates predictions for all the wells. 
+2. To reproduce the submission files, run `submission.py` which generates predictions for all the wells in the specified folder 'Train'.
     ```bash
-    ~$python scripts/submission.py
+    ~$python scripts/submission.py --folder 'Train'
     ```
