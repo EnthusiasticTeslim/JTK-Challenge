@@ -77,7 +77,7 @@ Both scripts only need to be run once.
     ```python
     from scripts.inference import ESP_Predictor
 
-    model = ESP_Predictor(checkpoint_path = "best-chckpt.ckpt",
+    model = ESP_Predictor(checkpoint_path = "best-chckpt-v21.ckpt",
                           api = "z8j7xj31j7",
                           csv_folder_path = "Train",
                           prob=0.8)
